@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import * as Yup from 'yup';
+import { Formik } from 'formik';
 import {
   Button,
   Container,
@@ -7,7 +8,6 @@ import {
   Input,
   Label,
 } from './ContactForm.styled';
-import { Formik } from 'formik';
 
 import { addContactThunk } from '..//..//redux/operations';
 import { selectContacts } from 'redux/selectors';
@@ -17,8 +17,8 @@ const phoneNumberReg =
 
 export const ContactForm = () => {
   const contacts = useSelector(selectContacts);
-
   const dispatch = useDispatch();
+
   const handleSubmit = contact => {
     const findContact = name => {
       const toFind = name.toLowerCase();
@@ -50,7 +50,6 @@ export const ContactForm = () => {
         if (handleSubmit({ name, number })) resetForm();
         else alert(`${name} already in contacts`);
       }}
-      // onSubmit={handleSubmit}
     >
       {({ errors, values }) => (
         <Container>
