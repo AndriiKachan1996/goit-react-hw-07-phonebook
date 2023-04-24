@@ -33,7 +33,7 @@ export const Label = styled.label`
 
 export const Input = styled(Field)`
   outline: none;
-  width: 250px;
+  width: 350px;
   height: 25px;
   font-size: 20px;
   font-weight: 500;

@@ -10,7 +10,7 @@ import {
 } from './ContactForm.styled';
 
 import { addContactThunk } from '..//..//redux/operations';
-import { selectContacts } from 'redux/selectors';
+import { selectContacts } from '..//..//redux/selectors';
 
 const phoneNumberReg =
   /\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}/g;
@@ -34,7 +34,7 @@ export const ContactForm = () => {
 
   return (
     <Formik
-      initialValues={{ name: '', number: '' }}
+      initialValues={{ name: '', phone: '' }}
       validationSchema={Yup.object({
         name: Yup.string()
           .matches(
@@ -42,12 +42,12 @@ export const ContactForm = () => {
             'Invalid Name'
           )
           .required(),
-        number: Yup.string()
+        phone: Yup.string()
           .matches(phoneNumberReg, 'Invalid phone number')
           .required(),
       })}
-      onSubmit={({ name, number }, { resetForm }) => {
-        if (handleSubmit({ name, number })) resetForm();
+      onSubmit={({ name, phone }, { resetForm }) => {
+        if (handleSubmit({ name, phone })) resetForm();
         else alert(`${name} already in contacts`);
       }}
     >
@@ -62,12 +62,12 @@ export const ContactForm = () => {
                 title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
               />
             </Label>
-            <Label htmlFor="number">
+            <Label htmlFor="phone">
               Phone
               <Input
-                name="number"
+                name="phone"
                 type="text"
-                title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
+                title="Phone phone must be digits and can contain spaces, dashes, parentheses and can start with +"
               />
             </Label>
 
@@ -75,9 +75,9 @@ export const ContactForm = () => {
               type="submit"
               disabled={
                 errors.name ||
-                errors.number ||
+                errors.phone ||
                 values.name === '' ||
-                values.number === ''
+                values.phone === ''
               }
             >
               Add contact

@@ -33,7 +33,7 @@ export const ContactItem = ({ contact }) => {
 ContactItem.propTypes = {
   contact: PropTypes.shape({
     name: PropTypes.string.isRequired,
-    number: PropTypes.string.isRequired,
+    phone: PropTypes.string.isRequired,
     id: PropTypes.string.isRequired,
   }),
 };
