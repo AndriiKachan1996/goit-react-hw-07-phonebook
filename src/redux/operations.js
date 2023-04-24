@@ -29,7 +29,7 @@ export const addContactThunk = createAsyncThunk(
   }
 );
 
-export const deleteContactThank = createAsyncThunk(
+export const deleteContactThunk = createAsyncThunk(
   'contacts/deleteContact',
   async (ContactID, thunkAPI) => {
     try {

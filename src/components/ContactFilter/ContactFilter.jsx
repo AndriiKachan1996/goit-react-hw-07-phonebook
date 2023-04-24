@@ -14,7 +14,7 @@ export const ContactFilter = () => {
 
   return (
     <Container>
-      <Title>Find contacts by name</Title>
+      <Title>Find contact by name</Title>
       <Input value={filter} onChange={handleChangeInput}></Input>
     </Container>
   );

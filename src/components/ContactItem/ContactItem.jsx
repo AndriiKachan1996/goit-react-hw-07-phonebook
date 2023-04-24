@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { Btn, Li, Name, Num } from './ContactItem.styled';
-import { deleteContactThank } from 'redux/operations';
+import { deleteContactThunk } from 'redux/operations';
 
 export const ContactItem = ({ contact }) => {
   const { name, phone, id } = contact;
@@ -9,7 +9,7 @@ export const ContactItem = ({ contact }) => {
 
   const dispatch = useDispatch();
   const heandleClickDell = id => {
-    dispatch(deleteContactThank(id));
+    dispatch(deleteContactThunk(id));
   };
 
   return (

@@ -1,18 +1,22 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, isAnyOf } from '@reduxjs/toolkit';
 import {
   addContactThunk,
-  deleteContactThank,
+  deleteContactThunk,
   getContactsThunk,
 } from './operations';
 
-const handlePending = state => {
-  state.contacts.isLoading = true;
+const STATUS = {
+  PENDING: 'pending',
+  FULFILLED: 'fulfilled',
+  REJECTED: 'rejected',
 };
 
-const handleFulfilled = (state, { payload }) => {
-  state.contacts.isLoading = false;
-  state.contacts.error = null;
-  state.contacts.items = payload;
+const arrOfThunks = [addContactThunk, deleteContactThunk, getContactsThunk];
+
+const typingThunk = type => arrOfThunks.map(tunk => tunk[type]);
+
+const handlePending = state => {
+  state.contacts.isLoading = true;
 };
 
 const handleRejected = (state, { payload }) => {
@@ -20,17 +24,21 @@ const handleRejected = (state, { payload }) => {
   state.contacts.error = payload;
 };
 
-const handleAddContactFulfilled = (state, { payload }) => {
+const handleFulfilled = state => {
   state.contacts.isLoading = false;
   state.contacts.error = null;
+};
+
+const handleFulfilledGet = (state, { payload }) => {
+  state.contacts.items = payload;
+};
+
+const handleAddContactFulfilled = (state, { payload }) => {
   state.contacts.items = [...state.contacts.items, payload];
 };
 
 const handleRemoveContactFulfilled = (state, { payload }) => {
-  state.contacts.isLoading = false;
-  state.contacts.error = null;
   const index = state.contacts.items.findIndex(item => item.id === payload.id);
-
   state.contacts.items.splice(index, 1);
 };
 
@@ -50,18 +58,18 @@ export const phonebookSlice = createSlice({
     },
   },
   extraReducers: builder => {
+    const { PENDING, FULFILLED, REJECTED } = STATUS;
     builder
-      .addCase(getContactsThunk.pending, handlePending)
-      .addCase(getContactsThunk.fulfilled, handleFulfilled)
-      .addCase(getContactsThunk.rejected, handleRejected)
 
-      .addCase(addContactThunk.pending, handlePending)
+      .addCase(getContactsThunk.fulfilled, handleFulfilledGet)
+
       .addCase(addContactThunk.fulfilled, handleAddContactFulfilled)
-      .addCase(addContactThunk.rejected, handleRejected)
 
-      .addCase(deleteContactThank.pending, handlePending)
-      .addCase(deleteContactThank.fulfilled, handleRemoveContactFulfilled)
-      .addCase(deleteContactThank.rejected, handleRejected);
+      .addCase(deleteContactThunk.fulfilled, handleRemoveContactFulfilled)
+
+      .addMatcher(isAnyOf(...typingThunk(PENDING)), handlePending)
+      .addMatcher(isAnyOf(...typingThunk(FULFILLED)), handleFulfilled)
+      .addMatcher(isAnyOf(...typingThunk(REJECTED)), handleRejected);
   },
 });
 
